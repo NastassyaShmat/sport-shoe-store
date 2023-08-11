@@ -1,12 +1,10 @@
-trigger ContactTrigger on Contact (before insert, before update) {
-  List<CountryRegionMapping__c> countryRegionMapping = CountryRegionMapping__c.getAll().values();
-  List<LoyaltyProgramConfiguration__mdt> loyaltyProgramConfiguration = LoyaltyProgramConfiguration__mdt.getAll().values(); 
- 
+trigger ContactTrigger on Contact (before insert, before update, before delete, after insert, after update, after delete) {
+
   if(Trigger.isBefore){
     if(Trigger.isInsert){
-      ContactTriggerHandler.onBeforeInsert(Trigger.new, countryRegionMapping);
+      ContactTriggerHandler.onBeforeInsert(Trigger.new);
     } else if(Trigger.isUpdate) {
-      ContactTriggerHandler.onBeforeUpdate(Trigger.new, loyaltyProgramConfiguration);
+      ContactTriggerHandler.onBeforeUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
     }
   }
 }
