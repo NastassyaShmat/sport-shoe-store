@@ -2,16 +2,17 @@ public with sharing class LoyaltyProgramUtils {
 
     private static Map<String, List<LoyaltyProgramConfiguration__mdt>> loyaltyProgramConfiguration {
         get {
-            if (loyaltyProgramConfiguration==null) {
+            if (loyaltyProgramConfiguration == null) {
 
                 loyaltyProgramConfiguration = new Map<String, List<LoyaltyProgramConfiguration__mdt>>();
 
-                for(LoyaltyProgramConfiguration__mdt loyaltyProgram: [SELECT FIELDS(ALL) FROM LoyaltyProgramConfiguration__mdt ORDER BY AmountSpent__c DESC]) {
+                for (LoyaltyProgramConfiguration__mdt loyaltyProgram: [SELECT Name, Region__c, DiscountLevel__c, AmountSpent__c, DiscountAmount__c 
+                                                                        FROM LoyaltyProgramConfiguration__mdt ORDER BY AmountSpent__c DESC]) {
 
-                    if(!loyaltyProgramConfiguration.containsKey(loyaltyProgram.get('Region__c'))) {
-                        loyaltyProgramConfiguration.put(loyaltyProgram.get('Region__c'), new List<LoyaltyProgramConfiguration__mdt>());
+                    if (!loyaltyProgramConfiguration.containsKey(loyaltyProgram.Region__c)) {
+                        loyaltyProgramConfiguration.put(loyaltyProgram.Region__c, new List<LoyaltyProgramConfiguration__mdt>());
                     } 
-                    loyaltyProgramConfiguration.get(loyaltyProgram.get('Region__c')).add(loyaltyProgram);                  
+                    loyaltyProgramConfiguration.get(loyaltyProgram.Region__c).add(loyaltyProgram);                  
                 }               
             }
             return loyaltyProgramConfiguration;
@@ -19,8 +20,8 @@ public with sharing class LoyaltyProgramUtils {
         set;
     }
 
-    public static void setCustomerType(List<SObject> sObjects) {
-        for(SObject sObj: sObjects){
+    public static void setContactCustomerType(List<Contact> contacts) {
+        for(Contact cont: contacts){
             for(LoyaltyProgramConfiguration__mdt loyaltyProtram: loyaltyProgramConfiguration.get(sObj.get('Region__c'))) {
                 if(sObj.get('AmountSpent__c') > loyaltyProgram.get('AmountSpent__c')) {
                     sObj.put('CustomerType__c', loyaltyProgram.get('DiscountLevel__c'));
