@@ -10,4 +10,8 @@ public with sharing class OrderService {
 
     }
 
+    public static void updateContacts(List<Order__c> newOrders) {
+        Set<Id> contactIds = new Set<Id>(newOrders.Contact__c);
+        update contactIds;
+    }
 }
