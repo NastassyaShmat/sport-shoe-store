@@ -1,16 +1,16 @@
 public with sharing class LoyaltyProgramUtils {
 
-    private static Map<String, List<LoyaltyProgramConfiguration__mdt>> loyaltyProgramConfiguration {
+    private static Map<String, List<Loyalty_Program_Configuration__mdt>> loyaltyProgramConfiguration {
         get {
             if (loyaltyProgramConfiguration == null) {
 
-                loyaltyProgramConfiguration = new Map<String, List<LoyaltyProgramConfiguration__mdt>>();
+                loyaltyProgramConfiguration = new Map<String, List<Loyalty_Program_Configuration__mdt>>();
 
-                for (LoyaltyProgramConfiguration__mdt loyaltyProgram: [SELECT Name, Region__c, DiscountLevel__c, AmountSpent__c, DiscountAmount__c 
-                                                                        FROM LoyaltyProgramConfiguration__mdt ORDER BY AmountSpent__c DESC]) {
+                for (Loyalty_Program_Configuration__mdt loyaltyProgram: [SELECT Region__c, Discount_Level__c, Amount_Spent__c, Discount_Amount__c 
+                                                                        FROM Loyalty_Program_Configuration__mdt ORDER BY Amount_Spent__c DESC]) {
 
                     if (!loyaltyProgramConfiguration.containsKey(loyaltyProgram.Region__c)) {
-                        loyaltyProgramConfiguration.put(loyaltyProgram.Region__c, new List<LoyaltyProgramConfiguration__mdt>());
+                        loyaltyProgramConfiguration.put(loyaltyProgram.Region__c, new List<Loyalty_Program_Configuration__mdt>());
                     } 
                     loyaltyProgramConfiguration.get(loyaltyProgram.Region__c).add(loyaltyProgram);                  
                 }               
@@ -22,10 +22,10 @@ public with sharing class LoyaltyProgramUtils {
 
     public static void setContactCustomerType(List<Contact> contacts) {
         for(Contact cont: contacts){
-            for(LoyaltyProgramConfiguration__mdt loyaltyProtram: loyaltyProgramConfiguration.get(sObj.get('Region__c'))) {
-                if(sObj.get('AmountSpent__c') > loyaltyProgram.get('AmountSpent__c')) {
-                    sObj.put('CustomerType__c', loyaltyProgram.get('DiscountLevel__c'));
-                    sObj.put('Discount__c', loyaltyProgram.get('DiscountAmount__c'));
+            for(Loyalty_Program_Configuration__mdt loyaltyProgram: loyaltyProgramConfiguration.get((String)cont.get('Region__c'))) {
+                if((Decimal)cont.get('Amount_Spent__c') > (Decimal)loyaltyProgram.get('Amount_Spent__c')) {
+                    cont.put('Customer_Type__c', loyaltyProgram.get('Discount_Level__c'));
+                    cont.put('Discount__c', loyaltyProgram.get('Discount_Amount__c'));
                 }
             }
         }
