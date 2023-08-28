@@ -7,9 +7,7 @@ trigger OrderTrigger on Order__c (before insert, before update, before delete, a
 			OrderTriggerHandler.onBeforeUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
 		}
 	} else if (Trigger.isAfter) {
-		if(Trigger.isInsert) {
-			OrderTriggerHandler.onAfterInsert(Trigger.new, Trigger.newMap);
-		} else if (Trigger.isUpdate) {
+		if (Trigger.isUpdate) {
 			OrderTriggerHandler.onAfterUpdate(Trigger.new, Trigger.old, Trigger.oldMap, Trigger.newMap);
 		}
 	}

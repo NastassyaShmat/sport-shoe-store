@@ -37,8 +37,11 @@ public with sharing class RegionUtils {
     }
 
     public static Map<Id, Contact> getContactsRegion(List<SObject> records) {
-        Set<Id> recordIdSet = (new Map<Id, SObject>(records)).keySet();
-        Map<Id, Contact> contactsMap = new Map<Id, Contact>([SELECT Id, Region__c FROM Contact WHERE Id IN :recordIdSet]);
+        Set<Id> contactIds = new Set<Id>();
+        for (SObject record: records) {
+            contactIds.add((Id)record.get('Contact__c'));
+        }
+        Map<Id, Contact> contactsMap = new Map<Id, Contact>([SELECT Id, Region__c FROM Contact WHERE Id IN :contactIds]);
 
         return contactsMap;
     }
