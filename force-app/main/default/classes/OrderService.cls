@@ -3,10 +3,10 @@ public with sharing class OrderService {
     Map<Id, Contact> contactsMap = RegionUtils.getContactsRegion(newOrders);
 
     for (Order__c order : newOrders) {
-      String region = contactsMap.get(order.Contact__c).Region__c;
+      String countryCode = (String) contactsMap.get(order.Contact__c)?.get('MailingCountryCode');      
       order.put(
         'Responsible_Sales_Rep__c',
-        RegionUtils.salesRepConfiguration.get(region)?.get('SalesRepId__c')
+        RegionUtils.salesRepConfiguration.get(countryCode)?.get('SalesRepId__c')
       );
     }
   }

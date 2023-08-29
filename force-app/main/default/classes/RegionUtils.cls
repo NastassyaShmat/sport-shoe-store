@@ -41,7 +41,7 @@ public with sharing class RegionUtils {
         for (SObject record: records) {
             contactIds.add((Id)record.get('Contact__c'));
         }
-        Map<Id, Contact> contactsMap = new Map<Id, Contact>([SELECT Id, Region__c FROM Contact WHERE Id IN :contactIds]);
+        Map<Id, Contact> contactsMap = new Map<Id, Contact>([SELECT Id, MailingCountryCode FROM Contact WHERE Id IN :contactIds]);
 
         return contactsMap;
     }
