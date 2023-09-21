@@ -35,12 +35,4 @@ public with sharing class RegionUtils {
             sObj.put(regionField, countryRegionConfiguration.get(countryCode)?.get('Region__c')); 
         }
     }
-
-    public static Map<Id, Contact> getContactsRegion(List<SObject> records) {
-        Set<Id> recordIdSet = (new Map<Id, SObject>(records)).keySet();
-        Map<Id, Contact> contactsMap = new Map<Id, Contact>([SELECT Id, Region__c FROM Contact WHERE Id IN :recordIdSet]);
-
-        return contactsMap;
-    }
-
 }
