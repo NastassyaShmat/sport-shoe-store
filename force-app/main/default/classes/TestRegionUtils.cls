@@ -2,27 +2,28 @@
 public class TestRegionUtils {
   @isTest
   public static void testSetRegion() {
-    List<Lead> testLeads = new List<Lead>{
-      TestDataFactory.createLead('TestLead1'),
-      TestDataFactory.createLead('TestLead2')
+    List<Contact> testCnts = new List<Contact>{
+      TestDataFactory.createContact(
+        TestDataFactory.createAccount(false).Id,
+        'TestContact1'
+      ),
+      TestDataFactory.createContact(
+        TestDataFactory.createAccount(false).Id,
+        'TestContact2'
+      )
     };
 
-    for (Lead lead : testLeads) {
-      lead.CountryCode = 'PL';
+    for (Contact cnt : testCnts) {
+      cnt.MailingCountryCode = 'PL';
     }
 
-    insert testLeads;
+    RegionUtils.setRegion(testCnts, 'MailingCountryCode', 'Region__c');
 
     Map<String, Country_Region_Mapping__c> countryRegionCnfg = TestDataFactory.createCountryRegionCnfg();
 
-    testLeads = [
-      SELECT Region__c
-      FROM Lead
-      WHERE Id IN :testLead
-    ];
     Assert.areEqual(
-      countryRegionCnfg.get(testLeads[0].CountryCode).Region__c,
-      testLeads[0].Region__c
+      countryRegionCnfg.get(testCnts[0].MailingCountryCode).Region__c,
+      testCnts[0].Region__c
     );
   }
 }

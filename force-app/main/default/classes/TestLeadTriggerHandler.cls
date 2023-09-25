@@ -9,12 +9,13 @@ public with sharing class TestLeadTriggerHandler {
     Map<String, Country_Region_Mapping__c> countryRegionCnfg = TestDataFactory.createCountryRegionCnfg();
 
     testLead = [
-      SELECT Region__c
+      SELECT CountryCode, Region__c
       FROM Lead
-      WHERE Id = :testLead
+      WHERE Id = :testLead.Id
+      LIMIT 1
     ];
     Assert.areEqual(
-      countryRegionCnfg.get(testLead.CountryCode).Region__c,
+      countryRegionCnfg.get((String) testLead.CountryCode).get('Region__c'),
       testLead.Region__c
     );
   }
@@ -30,12 +31,13 @@ public with sharing class TestLeadTriggerHandler {
     Map<String, Country_Region_Mapping__c> countryRegionCnfg = TestDataFactory.createCountryRegionCnfg();
 
     testLead = [
-      SELECT Region__c
+      SELECT CountryCode, Region__c
       FROM Lead
-      WHERE Id = :testLead
+      WHERE Id = :testLead.Id
+      LIMIT 1
     ];
     Assert.areEqual(
-      countryRegionCnfg.get(testLead.CountryCode).Region__c,
+      countryRegionCnfg.get((String) testLead.CountryCode).get('Region__c'),
       testLead.Region__c
     );
   }
