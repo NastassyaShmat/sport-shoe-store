@@ -22,19 +22,19 @@ public with sharing class OrderService {
     List<Order__c> newOrders,
     Map<Id, Order__c> oldOrdersMap
   ) {
-    List<Contact> contactsToUpdate = new List<Contact>();
+    Map<ID, Contact> contactsToUpdateMap = new Map<ID, Contact>();
     for (Order__c order : newOrders) {
       if (
         order.Status__c == 'Completed' &&
         order.Total_Amount__c != oldOrdersMap.get(order.Id).Total_Amount__c
       ) {
         Contact cnt = new Contact(Id = order.Contact__c);
-        contactsToUpdate.add(cnt);
+        contactsToUpdateMap.put(order.Contact__c, cnt);
       }
     }
 
-    if (!contactsToUpdate.isEmpty()) {
-      update contactsToUpdate;
+    if (!contactsToUpdateMap.isEmpty()) {
+      update contactsToUpdateMap.values();
     }
   }
 }
