@@ -15,10 +15,11 @@ public with sharing class ContactService {
       GROUP BY Contact__c
     ];
     Map<Id, Contact> contactsMap = new Map<Id, Contact>(newContacts);
-    
+
     for (AggregateResult ar : groupedResult) {
       contactsMap.get((Id) ar.get('Contact__c'))
         .Amount_Spent__c = (Decimal) ar.get('total');
+      contactsMap.get((Id) ar.get('Contact__c')).CurrencyIsoCode = 'USD'; // set default corporate currency
     }
   }
 }

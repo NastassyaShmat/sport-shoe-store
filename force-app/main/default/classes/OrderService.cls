@@ -25,8 +25,9 @@ public with sharing class OrderService {
     Map<ID, Contact> contactsToUpdateMap = new Map<ID, Contact>();
     for (Order__c order : newOrders) {
       if (
-        order.Status__c == 'Completed' &&
-        order.Total_Amount__c != oldOrdersMap.get(order.Id).Total_Amount__c
+        (order.Status__c != oldOrdersMap.get(order.Id).Status__c &&
+        order.Status__c == 'Completed') ||
+        (order.Total_Amount__c != oldOrdersMap.get(order.Id).Total_Amount__c)
       ) {
         Contact cnt = new Contact(Id = order.Contact__c);
         contactsToUpdateMap.put(order.Contact__c, cnt);
